@@ -87,17 +87,12 @@
 
    <div class="sm:ml-64 p-4">
 
-      <div class="mt-14 p-4">
+      <div class="mt-10 p-4">
 
+         <div class="rounded-4xl grid grid-cols-5 gap-4 mb-3">
 
-
-         <h1 class="text-dark-400 dark:text-black-500 text-2xl"> Dashboard </h1>
-
-
-         <div class="rounded-4xl grid grid-cols-4 gap-4 mb-3">
-
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-20 mt-4">
-               <p class="ms-2 mt-2"> Total Category </p>
+            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
+               <p class="ms-2 mt-2"> 1 </p>
                <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
 
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -105,8 +100,8 @@
                </p>
             </div>
 
-            <div class="rounded-4xl bg-gray-50 dark:bg-gray-800 items-start h-20 mt-4">
-               <p class="ms-2 mt-2">Total Products </p>
+            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
+               <p class="ms-2 mt-2"> 2 </p>
                <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
 
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -114,8 +109,8 @@
                </p>
             </div>
 
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-20 mt-4 rounded-sm">
-               <p class="ms-2 mt-2">Total Admins </p>
+            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
+               <p class="ms-2 mt-2"> 3 </p>
                <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
 
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -123,21 +118,8 @@
                </p>
             </div>
 
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-20 mt-4 rounded-sm">
-               <p class="ms-2 mt-2">Total Customers </p>
-               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
-
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                  </svg>
-               </p>
-            </div>
-         </div>
-
-         <h1 class="text-dark-400 dark:text-black-500 text-2xl"> Orders </h1>
-         <div class="grid grid-cols-4 gap-4 mb-3">
-
-            <div class="rounded-4xl bg-gray-50 dark:bg-gray-800 items-start h-20 mt-4">
-               <p class="ms-2 mt-2">Today Orders </p>
+            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
+               <p class="ms-2 mt-2"> 4 </p>
                <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
 
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -145,29 +127,21 @@
                </p>
             </div>
 
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-20 mt-4 rounded-sm">
-               <p class="ms-2 mt-2"> Total Orders </p>
-               <p class="dark:text-gray-500 border:grey flex items-center justify-center text-2xl text-gray-400">
+            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
+               <p class="ms-2 mt-2"> 5 </p>
+               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
 
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
                   </svg>
                </p>
             </div>
-
-
 
          </div>
-
-
-
-
-
 
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-
-
+   </div>
+   <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 
 </body>
