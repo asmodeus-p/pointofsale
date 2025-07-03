@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 
+
 // Redirect root to login
 Route::get('/', fn() => redirect('/login'));
 
@@ -29,6 +30,7 @@ Route::controller(LoginRegisterController::class)->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
     Route::resource('customers', CustomerController::class)->only(['index', 'create']);
     Route::resource('admins', AdminController::class)->only(['index', 'create']);
     Route::resource('categories', CategoryController::class)->only(['index', 'create', 'edit']);

@@ -36,9 +36,6 @@
             </button>
 
 
-
-
-
             <div class="ms-3 flex items-center">
 
                <div>
@@ -89,54 +86,32 @@
 
       <div class="mt-10 p-4">
 
-         <div class="rounded-4xl grid grid-cols-5 gap-4 mb-3">
 
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
-               <p class="ms-2 mt-2"> 1 </p>
-               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
-
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                  </svg>
-               </p>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
-               <p class="ms-2 mt-2"> 2 </p>
-               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
-
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                  </svg>
-               </p>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
-               <p class="ms-2 mt-2"> 3 </p>
-               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
-
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                  </svg>
-               </p>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
-               <p class="ms-2 mt-2"> 4 </p>
-               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
-
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                  </svg>
-               </p>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-gray-800 items-start h-80 mt-4 rounded-lg">
-               <p class="ms-2 mt-2"> 5 </p>
-               <p class="dark:text-gray-500 flex items-center justify-center text-2xl text-gray-400">
-
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-                  </svg>
-               </p>
-            </div>
-
+         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            @forelse ($products as $product)
+               <a href="{{ route('products.show', $product->id) }}"> 
+               <div class="bg-gray-50 dark:bg-gray-800 shadow-md h-80 mt-4 rounded-lg flex flex-col overflow-hidden">
+                     @if ($product->image_path)
+                        <img src="{{ asset('storage/' . $product->image_path) }}" class="w-full h-48 object-cover" alt="Product Image">
+                     @endif
+                     <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 truncate">
+                           {{ $product->name }}
+                        </h3>
+                        <p class="text-base font-bold text-gray-800 dark:text-white mt-2">
+                           ₱{{ number_format($product->price, 2) }}
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">
+                           Qty: {{ $product->quantity }}
+                        </p>
+                     </div>
+               </div>
+               </a>
+            @empty
+               <p class="col-span-5 text-center text-gray-500">No products available.</p>
+            @endforelse
          </div>
+
 
       </div>
 
