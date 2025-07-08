@@ -14,13 +14,16 @@ use Illuminate\Http\Request;
 // Redirect root to login
 Route::get('/', fn() => redirect('/login'));
 
-
-// Auth Routes
-Route::controller(LoginRegisterController::class)->group(function () {
+//guest
+Route::middleware('guest')->controller(LoginRegisterController::class)->group(function () {
     Route::get('/register', 'register')->name('register');
     Route::post('/store', 'store')->name('store');
     Route::get('/login', 'login')->name('login');
     Route::post('/authenticate', 'authenticate')->name('authenticate');
+});
+
+// Routes for authenticated users
+Route::middleware('auth')->controller(LoginRegisterController::class)->group(function () {
     Route::get('/home', 'home')->name('home');
     Route::post('/logout', 'logout')->name('logout');
 });

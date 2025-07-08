@@ -90,7 +90,7 @@
          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @forelse ($products as $product)
                <a href="{{ route('products.show', $product->id) }}"> 
-               <div class="bg-gray-50 dark:bg-gray-800 shadow-md h-80 mt-4 rounded-lg flex flex-col overflow-hidden">
+               <div class="bg-gray-50 dark:bg-gray-800 shadow-md h-80 mt-4 rounded-lg flex flex-col overflow-hidden outline outline-1 outline-gray-200">
                      @if ($product->image_path)
                         <img src="{{ asset('storage/' . $product->image_path) }}" class="w-full h-48 object-cover" alt="Product Image">
                      @endif

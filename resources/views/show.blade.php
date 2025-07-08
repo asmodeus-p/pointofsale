@@ -82,22 +82,29 @@
 
    <x-sidepanel />
 
-    <div class="max-w-4xl mx-auto mt-10 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+   
+
+    <div class="max-w-5xl mx-auto mt-[88px] bg-white dark:bg-gray-800">
         <div class="flex flex-col md:flex-row">
-            <div class="w-full md:w-1/2">
-                <img src="{{ asset('storage/' . $product->image_path) }}" class="w-full h-auto object-cover rounded" alt="{{ $product->name }}">
+            <div class="w-full">
+                <img src="{{ asset('storage/' . $product->image_path) }}" class="w-[500px] h-[500px] object-cover rounded-lg outline outline-1 outline-gray-300" alt="{{ $product->name }}">
             </div>
-            <div class="w-full md:w-1/2 md:pl-6 mt-4 md:mt-0">
+            <div class="w-full mt-4 ml-10 p-4">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $product->name }}</h2>
                 <p class="text-indigo-600 text-xl font-semibold mt-2">₱{{ number_format($product->price, 2) }}</p>
                 <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Quantity: {{ $product->quantity }}</p>
                 <p class="text-sm text-gray-700 dark:text-gray-300 mt-4">{{ $product->description }}</p>
+
+            <br><br><button class="px-4 py-3 w-[150px] bg-blue-600 text-white rounded hover:bg-blue-700 transition">Add to Cart</button>
+            <button class="px-4 py-3 w-[150px] bg-blue-600 text-white rounded hover:bg-blue-700 transition">Buy Now</button>
             </div>
+            
         </div>
     </div>
     
+    
 
-   </div>
+   
    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 
