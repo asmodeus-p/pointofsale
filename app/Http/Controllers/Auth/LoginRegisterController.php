@@ -54,8 +54,17 @@ class LoginRegisterController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard');
+
+            $role = Auth::user()->role;
+
+            // Redirect based on role
+            return redirect()->intended(match ($role) {
+                'admin'    => route('dashboard'),      // MUST exist
+                'user' => route('products.index'), // or just '/products'
+                default    => '/login',                // fallback just in case
+            });
         }
+
 
         return back()->withErrors([
             'email' => 'Your provided credentials do not match in our records.',

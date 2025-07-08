@@ -14,31 +14,42 @@ use Illuminate\Http\Request;
 // Redirect root to login
 Route::get('/', fn() => redirect('/login'));
 
-//guest
-Route::middleware('guest')->controller(LoginRegisterController::class)->group(function () {
-    Route::get('/register', 'register')->name('register');
-    Route::post('/store', 'store')->name('store');
-    Route::get('/login', 'login')->name('login');
-    Route::post('/authenticate', 'authenticate')->name('authenticate');
-});
+Route::controller(LoginRegisterController::class)->group(function () {
 
-// Routes for authenticated users
-Route::middleware('auth')->controller(LoginRegisterController::class)->group(function () {
-    Route::get('/home', 'home')->name('home');
-    Route::post('/logout', 'logout')->name('logout');
+    /* -------------   GUEST‑ONLY ROUTES   ------------- */
+    Route::middleware('guest')->group(function () {
+        Route::get('/register',      'register')->name('register');
+        Route::post('/store',        'store')->name('store');
+        Route::get('/login',         'login')->name('login');
+        Route::post('/authenticate', 'authenticate')->name('authenticate');
+    });
+
+    /* -------------   AUTH‑ONLY ROUTES   ------------- */
+    Route::middleware('auth')->group(function () {
+        Route::get('/home',   'home')->name('home');     // or /dashboard
+        Route::post('/logout', 'logout')->name('logout');   // ← must be POST with @csrf
+    });
+
 });
 
 // Authenticated Routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
 
-    Route::resource('customers', CustomerController::class)->only(['index', 'create']);
-    Route::resource('admins', AdminController::class)->only(['index', 'create']);
-    Route::resource('categories', CategoryController::class)->only(['index', 'create', 'edit']);
-    Route::resource('products', ProductController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
-    
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    // Customers and admins can both view product & category listings
+    Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+
+    // Admin-only: manage customers
+    Route::middleware('role:admin')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
+        Route::resource('products',   ProductController::class)->except('index');      // Full CRUD except list
+        Route::resource('categories', CategoryController::class)->except('index');     // Full CRUD except list
+        Route::resource('admins',     AdminController::class)->only(['index', 'create']);
+        Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');
+    });
 });
+
 
 Route::fallback(function () {
     return response('Page not found', 404);

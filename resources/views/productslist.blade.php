@@ -11,7 +11,7 @@
 </head>
 <body>
 
-
+ 
 <nav class="dark:bg-gray-800 dark:border-gray-700 fixed top-0 z-50 w-full bg-white border-b border-gray-200">
   <div class="lg:px-5 lg:pl-3 px-3 py-3">
     <div class="flex items-center justify-between">
@@ -105,7 +105,13 @@
                   <a href="#" class="hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-sm text-gray-700" role="menuitem">Earnings</a>
                 </li>
                 <li>
-                  <a href="#" class="hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-sm text-gray-700" role="menuitem">Sign out</a>
+                  <form action="{{ route('logout') }}" method="POST"
+                  class="hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  >
+                    @csrf
+                    <button type="submit">Logout</button>
+                  </form>
                 </li>
               </ul>
             </div>
@@ -156,6 +162,7 @@
         <a href="{{ route('products.create') }}">
         <div class="hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-small me-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center justify-center px-3 py-1 mb-3 text-sm text-center text-white transition-all bg-blue-700 rounded-full shadow-sm">
             Add Products
+            
         </div>
         </a>
 

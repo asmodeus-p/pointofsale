@@ -273,12 +273,12 @@
         class="bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer">
       <p class="dark:text-gray-400 mt-2 text-sm text-gray-500">Upload a product image (JPG, PNG, etc.).</p>
 
-      @if ($product->image)
+      {{-- @if ($product->image)
         <div class="mt-2">
           <p class="text-sm text-gray-500">Current Image:</p>
           <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="object-cover w-24 h-24 rounded">
         </div>
-      @endif
+      @endif --}}
       
       @error('image')
         <p class="dark:text-red-400 mt-1 text-xs text-red-600">{{ $message }}</p>
