@@ -39,17 +39,16 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+   public function create()
     {
         $categories = Category::all();
         return view('addproducts', compact('categories'));
-    }
+  }
 
+   
     /**
      * Store a newly created resource in storage.
      */
-
-
 
     public function store(Request $request)
     {
@@ -80,7 +79,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('show', compact('product'));
     }
 
     /**

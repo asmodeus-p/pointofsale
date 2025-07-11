@@ -7,13 +7,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
 
 // Redirect root to login
 Route::get('/', fn() => redirect('/login'));
-
 
 Route::controller(LoginRegisterController::class)->group(function () {
 
@@ -30,6 +30,7 @@ Route::controller(LoginRegisterController::class)->group(function () {
         Route::get('/home',   'home')->name('home');     // or /dashboard
         Route::post('/logout', 'logout')->name('logout');   // ← must be POST with @csrf
     });
+
 });
 
 // Authenticated Routes
@@ -38,6 +39,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     // Customers and admins can both view product & category listings
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::resource('/cart', CartController::class);
 
     // Admin-only: manage customers
     Route::middleware('role:admin')->group(function () {
