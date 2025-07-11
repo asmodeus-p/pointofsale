@@ -79,54 +79,93 @@
       </div>
 
    </nav>
-<div class="flex flex-row mt-[20px] ">
+
+
+
+   <div class="flex flex-row mt-[50px] ">
       <div class="w-64">
          <x-sidepanel />
       </div>
 
-   <!-- form -->
-    <div class="w-full p-[80px] bg-white dark:bg-gray-800">
-        <div class="flex flex-col md:flex-row">
-            <div class="w-full">
-                <img src="{{ asset('storage/' . $product->image_path) }}" class="w-[500px] h-[500px] object-cover rounded-lg outline outline-1 outline-gray-300" alt="{{ $product->name }}">
-            </div>
-            <div class="w-full mt-10">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">{{ $product->name }}</h2>
-                <p class="text-indigo-600 text-xl font-semibold mt-2">₱{{ number_format($product->price, 2) }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Quantity: {{ $product->quantity }}</p>
-                <p class="text-sm text-gray-700 dark:text-gray-300 mt-4">{{ $product->description }}</p>
-
-
-            <br><br>
-            <form action="{{ route('cart.store') }}" method="POST">
-               @csrf
-               <input type="hidden" name="product_id" value="{{ $product->id }}">
-               <input type="hidden" name="quantity" value="1">
-               <button type="submit">
-                  <div class="hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-small me-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center justify-center px-3 py-1 mb-3 text-sm text-center text-white transition-all bg-blue-700 rounded-full shadow-sm">
-                        Add to Cart
+      <!-- form -->
+      <div class="flex-1 mx-auto w-full bg-white dark:bg-gray-800 p-10 rounded ">
+         <h1 class="text-xl font-bold mb-4">Your Cart</h1>
+         
+         @foreach($cartItems as $item)
+         <div class="flex flex-row  border-b pb-4 mb-4">
+              <div class="ml-10">
+                  <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" class="mr-3 outline outline-gray-400">
+               </div>
+               
+               <div class="flex space-x-3 w-1/2">
+                  <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="Product" class="w-12 h-12 rounded ml-[24px] outline outline-gray-300">
+                  <div>
+                     <div class="font-semibold">{{ $item->product->name }}</div>
+                     <div class="text-blue-600 font-medium">₱{{ number_format($item->product->price, 2) }}</div>
                   </div>
-               </button>
-            </form>
+               </div>
 
+               <div class="ml-[200px]">
+                  <div class="flex items-center space-x-2 border rounded-full px-4 py-1 shadow-sm">
+                     <button type="button" class="text-lg font-bold" onclick="decreaseQuantity( '{{ $item->id }}' )">-</button>
+                     <span id="qty-{{ $item->id }}">{{ $item->quantity }}</span>
+                     <button type="button" class="text-lg font-bold" onclick="increaseQuantity( '{{ $item->id }}', '{{ $item->product->quantity }}')">+</button>
+                  </div>
+               </div>
 
-            <a href="{{ route('products.create') }}">
-            <div class="hover:bg-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-300 font-small me-3 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center justify-center px-3 py-1 mb-3 text-sm text-center text-white transition-all bg-blue-700 rounded-full shadow-sm">
-                  Buy Now   
-            </div>
-            </a>
+               <div class=" ml-[15px] inline-flex items-center justify-center text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-3.5  text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 ">
+                  <form action="{{ route('cart.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Do you want to remove this item from the cart?')">
+                     @csrf
+                     @method('DELETE')
+                     <button type="submit">Delete</button>
+                  </form>
+               </div>
+               
 
+         </div>
 
-            </div>
-            
-        </div>
-    </div>
-    
-    
-</div>
+         <form id="delete-form-{{ $item->id }}" action="{{ route('cart.destroy', $item->id) }}" method="POST" style="display: none;">
+            @csrf
+            @method('DELETE')
+         </form>
+
+         @endforeach
+      </div>
+   </div>
 
    
    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+   <script>
+      function increaseQuantity(id, maxQuantity) {
+         const qtySpan = document.getElementById('qty-' + id);
+         let current = parseInt(qtySpan.innerText);
+
+         if (current < maxQuantity) {
+               qtySpan.innerText = current + 1;
+         } else {
+               alert('Maximum stock reached');
+         }
+      }
+
+      function decreaseQuantity(id) {
+         const qtySpan = document.getElementById('qty-' + id);
+         let current = parseInt(qtySpan.innerText);
+
+         if (current > 1) {
+            qtySpan.innerText = current - 1;
+         } else {
+            const confirmDelete = confirm(' Do you want to remove this item from the cart?');
+            if (confirmDelete) {
+               const form = document.getElementById('delete-form-' + id);
+               if (form) {
+                  form.submit();
+               }
+            }
+         }
+      }
+   </script>
+
 
 
 </body>
