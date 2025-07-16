@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\EarningController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,6 @@ Route::controller(LoginRegisterController::class)->group(function () {
         Route::get('/home',   'home')->name('home');     // or /dashboard
         Route::post('/logout', 'logout')->name('logout');   // ← must be POST with @csrf
     });
-
 });
 
 // Authenticated Routes
@@ -40,7 +40,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::resource('/cart', CartController::class);
-    
+
 
     // Admin-only: manage customers
     Route::middleware('role:admin')->group(function () {
@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
         Route::resource('products',   ProductController::class)->except('index');      // Full CRUD except list
         Route::resource('categories', CategoryController::class)->except('index');     // Full CRUD except list
         Route::resource('admins',     AdminController::class)->only(['index', 'create']);
+        Route::get('/earnings', [EarningController::class, 'index'])->name('earnings.index');
         Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');
     });
 });
