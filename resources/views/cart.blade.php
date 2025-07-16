@@ -3,7 +3,7 @@
 
 <head>
    <meta charset="UTF-8">
-
+   <meta name="csrf-token" content="{{ csrf_token() }}">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    @vite('resources/css/app.css')
    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
@@ -94,6 +94,28 @@
                }
             }
          }
+      }
+
+      function updateQuantity(cartId, newQty) {
+         fetch(`/cart/${cartId}`, {
+            method: 'PUT',
+            headers: {
+               'Content-Type': 'application/json',
+               'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ quantity: newQty })
+         })
+         .then(response => {
+            if (!response.ok) throw new Error('Update failed');
+            return response.json();
+         })
+         .then(data => {
+            document.getElementById('qty-' + cartId).innerText = data.quantity;
+         })
+         .catch(error => {
+            alert("Something went wrong.");
+            console.error(error);
+         });
       }
    </script>
 
