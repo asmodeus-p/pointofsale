@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::resource('/cart', CartController::class);
+    
 
     // Admin-only: manage customers
     Route::middleware('role:admin')->group(function () {
