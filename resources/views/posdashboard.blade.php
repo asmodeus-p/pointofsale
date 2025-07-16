@@ -12,9 +12,7 @@
 
 <body>
 
-
    <x-navbar />
-
    <x-sidepanel />
 
    <div class="sm:ml-64 p-4">

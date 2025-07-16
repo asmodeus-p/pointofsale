@@ -136,7 +136,7 @@
                             </ul>
                         </div>
                     </li>
-                @elseif(Str::startsWith($routeName, 'products.index'))
+                @elseif(Str::startsWith($routeName, 'products.index') || Str::startsWith($routeName, 'categories.index') || Str::startsWith($routeName, 'cart.index') || Str::startsWith($routeName, 'customers.index'))
 
                     <li>
                         <a href="{{ route('customers.index') }}" class="dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group flex items-center p-2 text-gray-900 rounded-lg">
