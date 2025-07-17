@@ -46,6 +46,12 @@
                 Customers
             </a>
         </li>
+        <li>
+            <a href="{{ route('earnings.index') }}" 
+            class="dropdown-link hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-gray-700">
+                Earnings
+            </a>
+        </li>
     @elseif ($user->role === 'user')
         <li>
             <a href="{{ route('cart.index') }}"

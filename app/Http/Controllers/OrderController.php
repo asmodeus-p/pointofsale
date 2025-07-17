@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Earning;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,12 @@ class OrderController extends Controller
                 'price_at_purchase' => $product->price,
             ]);
 
+            // Create earning entry
+            Earning::create([
+                'order_id' => $order->id,
+                'amount' => $product->price * $quantity,
+            ]);
+
             // Deduct inventory
             $product->decrement('quantity', $quantity);
         });
@@ -80,6 +87,12 @@ class OrderController extends Controller
                 'user_id' => $userId,
                 'total_price' => $totalPrice,
                 'status' => 'pending',
+            ]);
+
+            // Create earning entry
+            Earning::create([
+                'order_id' => $order->id,
+                'amount' => $totalPrice,
             ]);
 
             foreach ($cartItems as $item) {
