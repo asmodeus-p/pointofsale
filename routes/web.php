@@ -39,9 +39,21 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     // Customers and admins can both view product & category listings
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::resource('/cart', CartController::class);
+
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // For single product Buy Now
     Route::post('/buy-now/{product}', [OrderController::class, 'buyNowSingle'])->name('buy.now.single');
+
+    // For cart Buy Now
+    Route::post('/buy-now-cart', [OrderController::class, 'buyNowCart'])->name('buy.now.cart');
+
+    // Order list (for redirect after order)
+    Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // Do not put on top of cart buy now route
+    Route::resource('/cart', CartController::class);
+
 
 
     // Admin-only: manage customers
@@ -53,11 +65,6 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
         Route::resource('admins',     AdminController::class)->only(['index', 'create']);
         Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');
     });
-});
-
-
-Route::fallback(function () {
-    return response('Page not found', 404);
 });
 
 
@@ -87,3 +94,8 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 // 👋 Test route
 Route::get('/greeting', fn() => 'Hello World');
+
+
+Route::fallback(function () {
+    return response('Page not found', 404);
+});

@@ -61,6 +61,14 @@
          </form>
 
          @endforeach
+
+         @if($cartItems->count())
+            <form action="{{ route('buy.now.cart') }}" method="POST">
+               @csrf
+               <button type="submit" class="btn btn-success">Buy All Now</button>
+            </form>
+         @endif
+
       </div>
    </div>
 
