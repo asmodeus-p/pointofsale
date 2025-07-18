@@ -44,11 +44,7 @@
                </form>
 
 
-               <form action="{{ route('buy.now.single', $product->id) }}" method="POST">
-                  @csrf
-                  <input type="number" name="quantity" value="1" min="1" max="{{ $product->quantity }}" required>
-                  <button type="submit" class="btn btn-primary">Buy Now</button>
-               </form>
+               <a href="{{ route('order.single.form', $product) }}" class="btn btn-primary">Buy Now</a>
 
                </div>
                

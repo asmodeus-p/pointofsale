@@ -9,9 +9,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\EarningController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-
 
 // Redirect root to login
 Route::get('/', fn() => redirect('/login'));
@@ -39,22 +39,21 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     // Customers and admins can both view product & category listings
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
 
-    // For single product Buy Now
+    // GET routes for place order views
+    Route::get('/place-order/cart', [OrderController::class, 'showCartOrderForm'])->name('order.cart.form');
+    Route::get('/place-order/product/{product}', [OrderController::class, 'showSingleOrderForm'])->name('order.single.form');
+
+    // POST routes for buy now
+    Route::post('/buy-now-cart', [OrderController::class, 'buyNowCart'])->name('buy.now.cart');
     Route::post('/buy-now/{product}', [OrderController::class, 'buyNowSingle'])->name('buy.now.single');
 
-    // For cart Buy Now
-    Route::post('/buy-now-cart', [OrderController::class, 'buyNowCart'])->name('buy.now.cart');
-
-    // Order list (for redirect after order)
+    // Order list (for redirect after placing order)
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
 
     // Do not put on top of cart buy now route
     Route::resource('/cart', CartController::class);
-
-
 
     // Admin-only: manage customers
     Route::middleware('role:admin')->group(function () {
@@ -64,7 +63,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
         Route::resource('categories', CategoryController::class)->except('index');     // Full CRUD except list
         Route::resource('admins',     AdminController::class)->only(['index', 'create']);
         Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');
-        Route::get('/earnings', [\App\Http\Controllers\Admin\EarningController::class, 'index'])->name('earnings.index');
+        Route::get('/earnings', [EarningController::class, 'index'])->name('earnings.index');
     });
 });
 
@@ -89,13 +88,8 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-
-//Route::get('/registrar');
-
-
 // 👋 Test route
 Route::get('/greeting', fn() => 'Hello World');
-
 
 Route::fallback(function () {
     return response('Page not found', 404);

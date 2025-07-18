@@ -13,12 +13,29 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    // Return blade functions
     public function index()
     {
         $orders = Order::with('items.product')->where('user_id', Auth::id())->latest()->get();
         return view('orders.index', compact('orders'));
     }
 
+    public function showCartOrderForm()
+    {
+        $cartItems = Cart::with('product')->where('user_id', Auth::id())->get();
+        if ($cartItems->isEmpty()) return redirect()->back()->with('error', 'Your cart is empty.');
+
+        $total = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+
+        return view('orders.confirm_cart', compact('cartItems', 'total'));
+    }
+
+    public function showSingleOrderForm(Product $product)
+    {
+        return view('orders.confirm_single', compact('product'));
+    }
+
+    // Process Data and Save to Database Functions
 
     public function buyNowSingle(Request $request, Product $product)
     {
