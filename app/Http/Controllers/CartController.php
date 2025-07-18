@@ -17,48 +17,48 @@ class CartController extends Controller
         $userId = Auth::id();
 
         $cartItems = Cart::where('user_id', $userId)
-                        ->with('product') // eager load the product
-                        ->get();
+            ->with('product') // eager load the product
+            ->get();
 
         return view('cart', compact('cartItems'));
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'product_id' => 'required|exists:products,id',
-        'quantity'   => 'required|integer|min:1',
-    ]);
-
-    $userId = Auth::id();
-    $product = Product::findOrFail($validated['product_id']);
-    $quantityToAdd = $validated['quantity'];
-
-    $existing = Cart::where('user_id', $userId)
-                    ->where('product_id', $product->id)
-                    ->first();
-
-    $alreadyInCart = $existing ? $existing->quantity : 0;
-
-    if ($alreadyInCart + $quantityToAdd > $product->quantity) {
-        return back()->withErrors([
-            'quantity' => 'Only ' . ($product->quantity - $alreadyInCart) . ' left in stock. You already have ' . $alreadyInCart . ' in your cart.'
+    {
+        $validated = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity'   => 'required|integer|min:1',
         ]);
-    }
 
-    if ($existing) {
-        $existing->quantity += $quantityToAdd;
-        $existing->save();
-    } else {
-        Cart::create([
-            'user_id'    => $userId,
-            'product_id' => $product->id,
-            'quantity'   => $quantityToAdd,
-        ]);
-    }
+        $userId = Auth::id();
+        $product = Product::findOrFail($validated['product_id']);
+        $quantityToAdd = $validated['quantity'];
 
-    return redirect()->route('cart.index')->with('success', 'Product added to cart!');
-}
+        $existing = Cart::where('user_id', $userId)
+            ->where('product_id', $product->id)
+            ->first();
+
+        $alreadyInCart = $existing ? $existing->quantity : 0;
+
+        if ($alreadyInCart + $quantityToAdd > $product->quantity) {
+            return back()->withErrors([
+                'quantity' => 'Only ' . ($product->quantity - $alreadyInCart) . ' left in stock. You already have ' . $alreadyInCart . ' in your cart.'
+            ]);
+        }
+
+        if ($existing) {
+            $existing->quantity += $quantityToAdd;
+            $existing->save();
+        } else {
+            Cart::create([
+                'user_id'    => $userId,
+                'product_id' => $product->id,
+                'quantity'   => $quantityToAdd,
+            ]);
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+    }
 
     public function destroy(Cart $cart)
     {
@@ -69,8 +69,8 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         $cartItem = Cart::where('id', $id)
-                        ->where('user_id', Auth::id())
-                        ->firstOrFail();
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
         $request->validate([
             'quantity' => 'required|integer|min:1',
@@ -86,8 +86,35 @@ class CartController extends Controller
         return response()->json(['quantity' => $cartItem->quantity]);
     }
 
+    public function incrementQuantity($id)
+    {
+        $cartItem = Cart::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->with('product')
+            ->firstOrFail();
 
+        if ($cartItem->quantity < $cartItem->product->quantity) {
+            $cartItem->quantity += 1;
+            $cartItem->save();
+        }
 
+        return response()->json(['quantity' => $cartItem->quantity]);
+    }
 
+    public function decrementQuantity($id)
+    {
+        $cartItem = Cart::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
+        if ($cartItem->quantity > 1) {
+            $cartItem->quantity -= 1;
+            $cartItem->save();
+        } else {
+            // Optional: return quantity = 0 to indicate possible removal
+            return response()->json(['quantity' => 0]);
+        }
+
+        return response()->json(['quantity' => $cartItem->quantity]);
+    }
 }

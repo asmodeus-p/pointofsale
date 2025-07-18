@@ -36,12 +36,19 @@ Route::controller(LoginRegisterController::class)->group(function () {
 // Authenticated Routes
 Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
 
-    // Customers and admins can both view product & category listings
+    // Cart Routes (must be placed before increment/decrement custom POST routes)
+    Route::resource('cart', CartController::class);
+
+    // Custom increment/decrement must go AFTER resource so it doesn't override PUT
+    Route::post('/cart/{id}/increment', [CartController::class, 'incrementQuantity'])->name('cart.increment');
+    Route::post('/cart/{id}/decrement', [CartController::class, 'decrementQuantity'])->name('cart.decrement');
+
+    // Customers and admins can view products, categories, and orders
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/my-orders',  [OrderController::class, 'index'])->name('orders.index');
 
-    // GET routes for place order views
+    // GET routes for place order pages
     Route::get('/place-order/cart', [OrderController::class, 'showCartOrderForm'])->name('order.cart.form');
     Route::get('/place-order/product/{product}', [OrderController::class, 'showSingleOrderForm'])->name('order.single.form');
 
@@ -49,23 +56,22 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::post('/buy-now-cart', [OrderController::class, 'buyNowCart'])->name('buy.now.cart');
     Route::post('/buy-now/{product}', [OrderController::class, 'buyNowSingle'])->name('buy.now.single');
 
-    // Order list (for redirect after placing order)
-    Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
+    // PUT 
+    Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
 
-    // Do not put on top of cart buy now route
-    Route::resource('/cart', CartController::class);
 
-    // Admin-only: manage customers
+    // Admin-only: manage everything else
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
-        Route::resource('products',   ProductController::class)->except('index');      // Full CRUD except list
-        Route::resource('categories', CategoryController::class)->except('index');     // Full CRUD except list
-        Route::resource('admins',     AdminController::class)->only(['index', 'create']);
+        Route::resource('products', ProductController::class)->except('index');
+        Route::resource('categories', CategoryController::class)->except('index');
+        Route::resource('admins', AdminController::class)->only(['index', 'create']);
         Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');
         Route::get('/earnings', [EarningController::class, 'index'])->name('earnings.index');
     });
 });
+
 
 
 Route::get('/greeting', function () {
