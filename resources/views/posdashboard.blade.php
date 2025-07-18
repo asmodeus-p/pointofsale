@@ -15,7 +15,11 @@
    <x-navbar />
    <x-sidepanel />
 
-   <div class="sm:ml-64 p-8 mt-12">
+   <div class="sm:ml-64 p-4">
+
+      <div class="p-4 mt-10">
+
+
          <div class="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid grid-cols-1 gap-4">
             @forelse ($products as $product)
                <a href="{{ route('products.show', $product->id) }}"> 
@@ -33,6 +37,12 @@
                         <p class="mt-1 text-sm text-gray-500">
                            Qty: {{ $product->quantity }}
                         </p>
+
+                        @if($product->quantity == 0)
+                           <p class="mt-2 text-xs text-red-600 font-medium">Out of stock</p>
+                        @elseif($product->quantity < 5)
+                           <p class="mt-2 text-xs text-yellow-600 font-medium">Low stock</p>
+                        @endif
                      </div>
                </div>
                </a>
@@ -42,7 +52,7 @@
          </div>
 
 
-   
+      </div>
 
    </div>
    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

@@ -80,7 +80,6 @@ class OrderController extends Controller
 
     public function buyNowCart()
     {
-
         $userId = Auth::id();
 
         $cartItems = Cart::with('product')->where('user_id', $userId)->get();
@@ -89,46 +88,54 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Your cart is empty.');
         }
 
-        // Calculate total price
-        $totalPrice = 0;
-        foreach ($cartItems as $item) {
-            if ($item->product->quantity < $item->quantity) {
-                return redirect()->back()->with('error', "Not enough stock for {$item->product->name}.");
-            }
-            $totalPrice += $item->product->price * $item->quantity;
-        }
-
-        DB::transaction(function () use ($userId, $cartItems, $totalPrice) {
-            // Create the order
-            $order = Order::create([
-                'user_id' => $userId,
-                'total_price' => $totalPrice,
-                'status' => 'pending',
-            ]);
-
-            // Create earning entry
-            Earning::create([
-                'order_id' => $order->id,
-                'amount' => $totalPrice,
-            ]);
-
-            foreach ($cartItems as $item) {
-                // Create order items
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item->product->id,
-                    'quantity' => $item->quantity,
-                    'price_at_purchase' => $item->product->price,
-                ]);
-
-                // Deduct stock
-                $item->product->decrement('quantity', $item->quantity);
-            }
-
-            // Clear cart
-            Cart::where('user_id', $userId)->delete();
+        $validItems = $cartItems->filter(function ($item) {
+            return $item->product->quantity >= $item->quantity;
         });
 
-        return redirect()->route('orders.index')->with('success', 'Order placed from cart. Awaiting payment.');
+        if ($validItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'All items in your cart are out of stock.');
+        }
+
+        try {
+            DB::transaction(function () use ($userId, $validItems) {
+                $totalPrice = 0;
+
+                foreach ($validItems as $item) {
+                    $product = Product::lockForUpdate()->find($item->product->id);
+                    $totalPrice += $product->price * $item->quantity;
+                }
+
+                $order = Order::create([
+                    'user_id' => $userId,
+                    'total_price' => $totalPrice,
+                    'status' => 'pending',
+                ]);
+
+                Earning::create([
+                    'order_id' => $order->id,
+                    'amount' => $totalPrice,
+                ]);
+
+                foreach ($validItems as $item) {
+                    $product = Product::lockForUpdate()->find($item->product->id);
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product->id,
+                        'quantity' => $item->quantity,
+                        'price_at_purchase' => $product->price,
+                    ]);
+
+                    $product->decrement('quantity', $item->quantity);
+
+                    $item->delete();
+                }
+            });
+
+            return redirect()->route('orders.index')->with('success', 'Order placed. Out-of-stock items were skipped and remain in your cart.');
+        } catch (\Exception $e) {
+            return redirect()->route('cart.index')->with('error', 'Something went wrong while placing the order.');
+        }
     }
+
 }

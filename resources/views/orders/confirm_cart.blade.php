@@ -24,34 +24,46 @@
             <hr class="mb-4">
                 @php
                     $total = 0;
+                    $hasOutOfStock = $cartItems->contains(function($item) {
+                        return $item->product->quantity < $item->quantity;
+                    });
                 @endphp
 
-         @foreach($cartItems as $item)
+        @foreach($cartItems as $item)
             @php
-               $subtotal = $item->product->price * $item->quantity;
-               $total += $subtotal;
+                $isOutOfStock = $item->quantity > $item->product->quantity;
             @endphp
 
-            <div class="flex justify-between items-center mb-4">
-               <div class="flex items-center space-x-3">
-                  <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="Product Image" class="w-12 h-12 rounded outline outline-gray-300">
-                  <div>
-                     <div class="font-semibold">{{ $item->product->name }}</div>
-                     <div class="text-sm text-gray-500">Qty: {{ $item->quantity }} x {{ $item->product->price  }} </div>
-                  </div>
-               </div>
-               <div class="text-blue-600 font-medium text-sm">
-                  ₱{{ number_format($subtotal, 2) }}
-               </div>
-            </div>
-         @endforeach
+            @if(!$isOutOfStock)
+                @php
+                    $subtotal = $item->product->price * $item->quantity;
+                    $total += $subtotal;
+                @endphp
 
-         <hr class="my-4">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex items-center space-x-3">
+                        <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="Product Image" class="w-12 h-12 rounded outline outline-gray-300">
+                        <div>
+                            <div class="font-semibold">{{ $item->product->name }}</div>
+                            <div class="text-sm text-gray-500">Qty: {{ $item->quantity }} x {{ $item->product->price  }}</div>
+                        </div>
+                    </div>
+                    <div class="text-blue-600 font-medium text-sm">
+                        ₱{{ number_format($subtotal, 2) }}
+                    </div>
+                </div>
 
-         <div class="flex justify-between items-center font-semibold mb-4">
+                <input type="hidden" name="product_id[]" value="{{ $item->product->id }}">
+                <input type="hidden" name="quantity[]" value="{{ $item->quantity }}">
+            @endif
+        @endforeach
+
+        <hr class="my-4">
+
+        <div class="flex justify-between items-center font-semibold mb-4">
             <div>Total Amount</div>
             <div class="text-blue-600">₱{{ number_format($total, 2) }}</div>
-         </div>
+        </div>
             <form method="POST" action="{{ route('buy.now.cart') }}">
                 @csrf
                 <button class="btn btn-success w-full px-4 py-2 text-white bg-blue-900 hover:bg-blue-500 text-center font-semibold rounded shadow-md">
