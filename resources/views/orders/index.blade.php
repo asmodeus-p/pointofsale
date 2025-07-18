@@ -9,17 +9,13 @@
     </head>
     <body>
 
-        <x-navbar />
+    <x-navbar />
+    <x-sidepanel />
 
-        <div class="flex">
-            
-            <div class="w-[255px] hidden md:flex md:flex-col transition-transform" aria-label="Sidebar">
-                <x-sidepanel />
-            </div>
+    <div class="p-8 sm:ml-64 mt-12">
+        <h2 class="mb-4 text-xl font-semibold">My Orders</h2>
 
-        <div class="w-max px-4">
-            <h2 class="mb-4 text-xl font-semibold">My Orders</h2>
-
+            <!-- <div class="w-max"> -->
                 @foreach($orders as $order)
                     <div class="p-4 mb-4 bg-white rounded shadow">
                         <p><strong>Order #{{ $order->id }}</strong> - Status: {{ $order->status }}</p>
@@ -31,7 +27,10 @@
                         <p class="mt-2 font-bold">Total: ₱{{ $order->total_price }}</p>
                     </div>
                 @endforeach
-            </div>
+            <!-- </div> -->
         </div>
-    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    
+</body>
 </html>
