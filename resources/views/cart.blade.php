@@ -17,32 +17,50 @@
             <h1 class="mb-4 text-xl font-bold">Your Cart</h1>
 
             @foreach ($cartItems as $item)
-                <div class="flex items-center justify-between p-3 mb-2 border rounded">
-                    <div>
-                        <p class="font-semibold">{{ $item->product->name }}</p>
-                        <p>₱{{ $item->product->price }}</p>
+                <div class="flex flex-row justify-between items-center p-4 mb-4 border rounded {{ $item->product->quantity < $item->quantity ? 'opacity-50' : '' }}">
+                    
+                    {{-- Product Info with Image --}}
+                    <div class="flex items-center gap-4 w-1/2">
+                        <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="w-12 h-12 rounded outline outline-gray-300">
+                        <div>
+                            <div class="font-semibold">{{ $item->product->name }}</div>
+                            <div class="font-medium text-blue-600">₱{{ number_format($item->product->price, 2) }}</div>
+                        </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        {{-- Decrement Button --}}
-                        <button onclick="updateCart({{ $item->id }}, 'decrement', {{ $item->product->quantity }})" class="px-2 py-1 bg-gray-200 rounded">−</button>
+                    {{-- Quantity & Controls --}}
+                    <div class="flex items-center gap-3">
+                        {{-- Decrement --}}
+                        <div class="flex flex-col items-center gap-1"> 
+                            {{-- Quantity Controls --}}
+                            <div class="flex items-center gap-2">
+                                <button onclick="updateCart('{{ $item->id }}', 'decrement', '{{ $item->product->quantity }}')" class="px-3 py-1 text-lg bg-gray-200 rounded-full font-bold"
+                                @if($item->product->quantity < $item->quantity) disabled @endif>−</button>
 
-                        {{-- Quantity Display --}}
-                        <span id="qty-{{ $item->id }}" class="w-12 text-center">{{ $item->quantity }}</span>
+                                <span id="qty-{{ $item->id }}" class="w-8 text-center">{{ $item->quantity }}</span>
 
-                        {{-- Increment Button --}}
-                        <button onclick="updateCart({{ $item->id }}, 'increment', {{ $item->product->quantity }})" class="px-2 py-1 bg-gray-200 rounded">+</button>
+                                <button onclick="updateCart('{{ $item->id }}', 'increment', '{{ $item->product->quantity }}')" class="px-3 py-1 text-lg bg-gray-200 rounded-full font-bold"
+                                @if($item->product->quantity < $item->quantity) disabled @endif>+</button>
+                            </div>
 
-                        {{-- Remove Button --}}
+                            {{-- Out of Stock Warning --}}
+                            @if($item->product->quantity < $item->quantity)
+                                <p class="text-xs text-red-600 font-medium mt-1">Out of stock</p>
+                            @endif
+                            
+                        </div>
+                        
+                        {{-- Delete --}}
                         <form id="delete-form-{{ $item->id }}" action="{{ route('cart.destroy', $item->id) }}" method="POST" class="hidden">
                             @csrf
                             @method('DELETE')
                         </form>
-                        <button onclick="document.getElementById('delete-form-{{ $item->id }}').submit();" class="px-2 py-1 text-white bg-red-500 rounded">✕</button>
+                        <button onclick="document.getElementById('delete-form-{{ $item->id }}').submit();" class="px-3 py-1 text-sm text-white bg-red-500 hover:bg-red-600 rounded-full">Delete</button>
                     </div>
                 </div>
             @endforeach
 
+            {{-- Footer CTA --}}
             @if($cartItems->count())
                 <a href="{{ route('order.cart.form') }}" class="hover:bg-blue-700 inline-block px-4 py-2 mt-4 text-white bg-blue-600 rounded">Buy All Now</a>
             @else
