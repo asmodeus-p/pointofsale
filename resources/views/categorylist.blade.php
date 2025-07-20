@@ -6,32 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     @vite('resources/css/app.css')
-   
-    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>PointOfSale</title>
 </head>
 <body>
+
+<div class="bg-wrapper bg-blue-200/50">
+   <div class="bg-image"></div>
+</div>
  
-  <x-navbar />
-  <x-sidepanel />
+<x-navbar />
+<x-sidepanel />
 
-<div class="sm:ml-64 p-4">
 
-  <div class="flex justify-end mt-16">
-
-    <x-filter-bar :sortFields="['name', 'created_at']" />
-    
-  </div>
+<div class="sm:ml-64 p-8 mt-12">
+    <h1 class="mb-4 text-2xl font-bold lg:mr-[545px]">Categories</h1>
+        
+    <div class="flex justify-end">
+        <x-filter-bar :sortFields="['name', 'created_at']" />
+    </div>
 
 <div class="p-4" >
-   
-<div class="sm:rounded-lg relative overflow-x-auto bg-gray-100 shadow-md">
-    <table class="rtl:text-right dark:text-gray-400 w-full text-sm text-left text-gray-500">
+    
+<div class="border border-gray-400/50 sm:rounded-lg relative overflow-x-auto bg-gray-100 shadow-md">
+    <table class=" rtl:text-right dark:text-gray-400 w-full text-sm text-left text-gray-500">
         <tbody>
         <div class="container px-4 mx-auto mt-8">
 
             {{-- Add Category Button --}}
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-2xl font-bold">Categories</h2>
                 @if(auth()->user() && auth()->user()->role === 'admin')
                     <button onclick="document.getElementById('addCategoryModal').classList.remove('hidden')" class="hover:bg-blue-700 px-4 py-2 text-white bg-blue-600 rounded">
                         + Add Category

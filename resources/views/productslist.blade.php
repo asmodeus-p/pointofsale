@@ -5,31 +5,31 @@
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
     @vite('resources/css/app.css')
-   
-    <title>Document</title>
+    <title>PointOfSale</title>
 </head>
 <body>
+
+   <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+   </div>
 
     <x-navbar />
     <x-sidepanel />
 
 
     @if(auth()->user() && auth()->user()->role === 'admin')
-        <div class="sm:ml-64 p-4">
+    <div class="sm:ml-64 p-8 mt-12">
+    <h1 class="mb-4 text-2xl font-bold lg:mr-[545px]">Add Products</h1>
+        
+        <div class="flex justify-end ">
+            <x-filter-bar :sortFields="['name', 'price', 'created_at']" />         
+        </div>
 
-            <div class="flex justify-end mt-16">
-
-                <x-filter-bar :sortFields="['name', 'price', 'created_at']" />
-                
-            </div>
-
-            <div class="p-4" >
-                <div class="sm:rounded-lg relative overflow-x-auto shadow-md">
+            <div class="p-4">
+                <div class="border border-gray-400/50 bg-white sm:rounded-lg relative overflow-x-auto shadow-md">
                     <div class="flex-column md:flex-row md:space-y-0 dark:bg-gray-900 flex flex-wrap items-center justify-between px-4 pt-8 pb-4 space-y-4 bg-gray-100">
-                        <div>           
-                        <h2 class="text-2xl font-bold">All Products</h2>
-                        </div>
 
                         <a href="{{ route('products.create') }}">
                         <div class="hover:bg-blue-700 px-4 py-2 text-white bg-blue-600 rounded">
@@ -108,11 +108,12 @@
 
                         @empty
 
-                            <tr class="whitespace-nowrap dark:text-white flex items-center px-6 py-4 text-gray-900">
-                                {{-- NONE FETCHED --}}
+                        <tr>
+                            <td colspan="5" class="text-center py-6 text-gray-500 dark:text-white">
                                 No products found.
-                            </tr>
-                            
+                            </td>
+                        </tr>
+
                         @endforelse
 
                         {{-- END CARD --}}

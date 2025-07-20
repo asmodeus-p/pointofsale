@@ -6,18 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
     <title>Your Cart</title>
 </head>
 <body>
+    <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+    </div>
+    
     <x-navbar />
     <x-sidepanel />
 
     <div class="sm:ml-64 mt-14 p-8">
-        <div class="dark:bg-gray-800 flex-1 w-full p-6 bg-white rounded">
-            <h1 class="mb-4 text-xl font-bold">Your Cart</h1>
+        <div class="dark:bg-gray-800 flex-1 w-full p-6 ">
+            <h1 class="mb-4 text-2xl font-bold">Your Cart</h1>
 
             @foreach ($cartItems as $item)
-                <div class="flex flex-row justify-between items-center p-4 mb-4 border rounded {{ $item->product->quantity < $item->quantity ? 'opacity-50' : '' }}">
+                <div class="bg-white rounded-md flex flex-row justify-between items-center p-4 mb-4 border rounded {{ $item->product->quantity < $item->quantity ? 'opacity-50' : '' }}">
                     
                     {{-- Product Info with Image --}}
                     <div class="flex items-center gap-4 w-1/2">

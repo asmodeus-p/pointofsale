@@ -5,14 +5,19 @@
     @vite('resources/css/app.css')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <title>cybersofie</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>PointOfSale</title>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-  
+<body>
+
+   <div class="bg-wrapper">
+      <div class="bg-image"></div>
+   </div>
+
    <x-navbar />
    <x-sidepanel />
 
-    <div class="sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+    <div class="sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 w-full max-w-sm p-4 border border-gray-200 rounded-lg shadow-sm">
         <form class="space-y-6" action="#">
             <h5 class="dark:text-white text-xl font-medium text-gray-900">Add Admin</h5>
             <div>

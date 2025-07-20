@@ -5,11 +5,15 @@
         @vite('resources/css/app.css')
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-        <title>My Orders</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <title>PointOfSale</title>
     </head>
-    <body>
 
-
+<body>
+    <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+    </div>
+    
    <x-navbar />
    <x-sidepanel />
 

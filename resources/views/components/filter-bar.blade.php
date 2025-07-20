@@ -19,7 +19,7 @@
     <button type="submit" class="px-3 py-1 text-white bg-blue-600 rounded">Apply</button>
 
     <a href="{{ route(Route::currentRouteName()) }}"
-       class="hover:bg-gray-400 px-3 py-1 text-black bg-gray-300 rounded">
+       class="hover:bg-gray-400 px-3 py-1 text-white bg-red-700 rounded">
         Reset
     </a>
 </form>

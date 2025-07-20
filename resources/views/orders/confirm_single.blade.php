@@ -5,15 +5,19 @@
     @vite('resources/css/app.css')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-    <title>Confirm Order</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <title>PointOfSale</title>
 </head>
 <body>
-
+    <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+    </div>
+    
     <x-navbar />
     <x-sidepanel />
 
-    <div class="sm:ml-64 p-8 mt-14">
-        <div class="dark:bg-gray-800 flex-1 w-full bg-white rounded p-6">
+    <div class="sm:ml-64 p-8 mt-14 bg-tr">
+        <div class="dark:bg-gray-800 flex-1 w-full rounded p-6">
             <div class="mb-6">
                 <a href="{{ route('products.show', $product->id) }}" class="text-sm text-blue-600 hover:underline">&larr; Back to Product</a>
             </div>
@@ -60,6 +64,7 @@
             </form>
         </div>
     </div>
+
 
     <script>
         const quantityInput = document.getElementById('quantity');

@@ -7,18 +7,22 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    @vite('resources/css/app.css')
    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
-   <title>Document</title>
+   <link rel="stylesheet" href="css/styles.css">
+   <title>PointOfSale</title>
 </head>
 
 <body>
-
+    <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+    </div>
+    
    <x-navbar />
    <x-sidepanel />
 
-   <div class="sm:ml-64 p-8 mt-14">
+   <div class="sm:ml-64 p-8 mt-14 bg-transparent">
 
       <!-- form -->
-      <div class="w-full bg-white dark:bg-gray-800">
+      <div class="w-full dark:bg-gray-800">
          <div class="md:flex-row flex flex-col gap-6">
             <div class="w-full flex justify-center">
                <img 

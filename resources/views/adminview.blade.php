@@ -6,23 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
     <title>Document</title>
 </head>
 <body>
+    <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+    </div>
 
    <x-navbar />
    <x-sidepanel />
-    
-  <div class="sm:ml-64 p-4">
-    
-    <div class="flex justify-between mt-16">
-      <h1 class="px-4 text-3xl font-bold">Admins</h1>
-      <x-filter-bar :sortFields="['name', 'created_at','email']" />
-      
-    </div>
+
+    <div class="sm:ml-64 p-8 mt-12">
+        <h1 class="mb-4 text-2xl font-bold ">Admins</h1>
+        
+        <div class="flex justify-end">
+            <x-filter-bar :sortFields="['name', 'created_at','email']" />
+        </div>
+
     
       <div class="p-4" >
-          <div class="sm:rounded-lg relative overflow-x-auto shadow-md">
+          <div class="border border-gray-400/50 bg-white sm:rounded-lg relative overflow-x-auto shadow-md">
               
               @if($admins->isEmpty())
                   <p class="text-gray-600">No admins found.</p>
@@ -30,12 +34,6 @@
                   <table class="rtl:text-right dark:text-gray-400 w-full text-sm text-left text-gray-500">
                       <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                           <tr>
-                              <th scope="col" class="p-4">
-                                  <div class="flex items-center">
-                                      <input id="checkbox-all-search" type="checkbox" class="focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm">
-                                      <label for="checkbox-all-search" class="sr-only">checkbox</label>
-                                  </div>
-                              </th>
                               <th scope="col" class="px-6 py-3">
                                   Name
                               </th>
@@ -54,12 +52,6 @@
 
                           @foreach ($admins as $admin)
                               <tr class="hover:bg-gray-50 border-b">
-                              <td class="w-4 p-4">
-                                  <div class="flex items-center">
-                                      <input id="checkbox-table-search-1" type="checkbox" class="focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 w-4 h-4 text-blue-600 bg-gray-300 border-gray-600 rounded-sm">
-                                      <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-                                  </div>
-                              </td>
                               <th scope="row" class="whitespace-nowrap dark:text-white flex items-center px-6 py-4 text-gray-900">
                                   
                                   <div class="ps-3">
