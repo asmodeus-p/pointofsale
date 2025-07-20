@@ -12,7 +12,7 @@
     <x-navbar />
     <x-sidepanel />
 
-    <div class="p-8 sm:ml-64 mt-12">
+    <div class="sm:ml-64 p-8 mt-12">
         <h2 class="mb-4 text-xl font-semibold">My Orders</h2>
 
             <!-- <div class="w-max"> -->
@@ -25,6 +25,15 @@
                             @endforeach
                         </ul>
                         <p class="mt-2 font-bold">Total: ₱{{ $order->total_price }}</p>
+
+                        @if(Auth::user()->role === 'admin' && $order->status === 'pending')
+                            <form method="POST" action="{{ route('orders.markAsPaid', $order) }}">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="px-3 py-1 text-white bg-green-600 rounded">Mark as Paid</button>
+                            </form>
+                        @endif
+
                     </div>
                 @endforeach
             <!-- </div> -->

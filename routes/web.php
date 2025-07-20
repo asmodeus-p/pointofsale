@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
         Route::resource('admins', AdminController::class)->only(['index', 'create']);
         Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');
         Route::get('/earnings', [EarningController::class, 'index'])->name('earnings.index');
+        Route::patch('/orders/{order}/mark-paid', [OrderController::class, 'markAsPaid'])->name('orders.markAsPaid');
     });
 });
 

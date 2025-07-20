@@ -16,9 +16,15 @@ class OrderController extends Controller
     // Return blade functions
     public function index()
     {
-        $orders = Order::with('items.product')->where('user_id', Auth::id())->latest()->get();
+        $user = Auth::user();
+
+        $orders = $user->role === 'admin'
+            ? Order::with('items.product', 'user')->latest()->get()
+            : Order::with('items.product')->where('user_id', $user->id)->latest()->get();
+
         return view('orders.index', compact('orders'));
     }
+
 
     public function showCartOrderForm()
     {
@@ -138,4 +144,15 @@ class OrderController extends Controller
         }
     }
 
+    public function markAsPaid(Order $order)
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $order->status = 'paid';
+        $order->save();
+
+        return back()->with('success', 'Order marked as paid.');
+    }
 }
