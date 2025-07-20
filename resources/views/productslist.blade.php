@@ -123,7 +123,9 @@
         </div>
     @else
         <div class="sm:ml-64 p-4">
+            
             <div class="p-4 mt-10">
+                <x-category-filter :categories="$categories" />
                 <div class="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid grid-cols-1 gap-4">
                     @forelse ($products as $product)
                     <a href="{{ route('products.show', $product->id) }}"> 

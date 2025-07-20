@@ -15,37 +15,40 @@ class ProductController extends Controller
     {
         $query = Product::query();
 
+        // Apply search
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%');
-            });
+            $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        // Apply category filter
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Sorting logic
         $sortField = $request->get('sort_by', 'created_at');
         $sortOrder = $request->get('order', 'desc');
 
-        if (
-            in_array($sortField, ['name', 'created_at']) &&
-            in_array($sortOrder, ['asc', 'desc'])
-        ) {
+        if (in_array($sortField, ['name', 'created_at']) && in_array($sortOrder, ['asc', 'desc'])) {
             $query->orderBy($sortField, $sortOrder);
         }
 
-
         $products = $query->paginate(10)->withQueryString();
-        return view('productslist', compact('products'));
+        $categories = \App\Models\Category::all(); // Load categories for filter dropdown
+
+        return view('productslist', compact('products', 'categories'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-   public function create()
+    public function create()
     {
         $categories = Category::all();
         return view('addproducts', compact('categories'));
-  }
+    }
 
-   
+
     /**
      * Store a newly created resource in storage.
      */

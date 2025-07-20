@@ -24,17 +24,11 @@
 
 <div class="p-4" >
    
-
-
 <div class="sm:rounded-lg relative overflow-x-auto bg-gray-100 shadow-md">
-    
     <table class="rtl:text-right dark:text-gray-400 w-full text-sm text-left text-gray-500">
-    
         <tbody>
-
         <div class="container px-4 mx-auto mt-8">
 
-            
             {{-- Add Category Button --}}
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-2xl font-bold">Categories</h2>
@@ -67,9 +61,12 @@
                     </thead>
                     <tbody>
                             @foreach($categories as $category)
-                            <tr class="hover:bg-gray-50 border-b">
+                            <tr onclick="window.location='{{ route('products.index', ['category_id' => $category->id]) }}'"
+                            class="hover:bg-gray-50 border-b cursor-pointer">
                                 <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                                <td class="px-6 py-4">{{ $category->name }}</td>
+                                <td class="px-6 py-4">
+                                        {{ $category->name }}
+                                </td>
                                 <td class="px-6 py-4">{{ $category->created_at->format('M d, Y') }}</td>
                                 @if(auth()->user() && auth()->user()->role === 'admin')
                                     <td class="px-6 py-4">
@@ -105,22 +102,10 @@
                 </div>
 
             </div>
-
-</tbody>
-
+        </tbody>
     </table>
+</div>  
 </div>
-           
-
-
-        
-         
-
-         
-</div>
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 </body>
 </html>
