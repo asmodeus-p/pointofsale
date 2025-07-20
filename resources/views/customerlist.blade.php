@@ -58,7 +58,15 @@
                                         {{ $customer->email }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="#" class="dark:text-blue-500 hover:underline font-medium text-blue-600">Edit user</a>
+                                        @if($customer->role !== 'admin')
+                                            <form action="{{ route('customers.promote', $customer->id) }}" method="POST" onsubmit="return confirm('Promote this user to admin?');">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button class="hover:bg-blue-700 px-3 py-1 text-white bg-blue-600 rounded">Promote to Admin</button>
+                                            </form>
+                                        @else
+                                            <span class="italic text-gray-500">Already Admin</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

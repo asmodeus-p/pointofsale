@@ -82,4 +82,14 @@ class CustomerController extends Controller
     {
         //
     }
+
+    public function promoteToAdmin(User $user)
+    {
+        if ($user->role !== 'admin') {
+            $user->update(['role' => 'admin']);
+            return back()->with('success', "User #{$user->id} has been promoted to admin.");
+        }
+
+        return back()->with('info', "User #{$user->id} is already an admin.");
+    }
 }

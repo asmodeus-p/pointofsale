@@ -65,6 +65,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
+        Route::patch('/customers/{user}/promote', [CustomerController::class, 'promoteToAdmin'])->name('customers.promote');
         Route::resource('products', ProductController::class)->except('index', 'show');
         Route::resource('categories', CategoryController::class)->except('index');
         Route::resource('admins', AdminController::class)->only(['index', 'create']);
