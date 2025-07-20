@@ -14,14 +14,15 @@
 </div>
 
 <ul class="py-1 text-sm" role="none">
-    <li>
-        <a href="{{ route('dashboard') }}" 
-        class="dropdown-link hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-gray-700">
-            Dashboard
-        </a>
-    </li>
-
+    
     @if ($user->role === 'admin')
+        <li>
+            <a href="{{ route('dashboard') }}" 
+            class="dropdown-link hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-gray-700">
+                Dashboard
+            </a>
+        </li>
+
         <li>
             <a href="{{ route('admins.index') }}" 
             class="dropdown-link hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white block px-4 py-2 text-gray-700">

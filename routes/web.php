@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::get('/products',   [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/my-orders',  [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     // GET routes for place order pages
     Route::get('/place-order/cart', [OrderController::class, 'showCartOrderForm'])->name('order.cart.form');
@@ -64,7 +65,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('customers', CustomerController::class)->only(['index', 'create', 'store']);
-        Route::resource('products', ProductController::class)->except('index');
+        Route::resource('products', ProductController::class)->except('index', 'show');
         Route::resource('categories', CategoryController::class)->except('index');
         Route::resource('admins', AdminController::class)->only(['index', 'create']);
         Route::patch('/admins/{user}/demote', [AdminController::class, 'demote'])->name('admins.demote');

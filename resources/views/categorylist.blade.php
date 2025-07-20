@@ -34,14 +34,17 @@
 
         <div class="container px-4 mx-auto mt-8">
 
+            
             {{-- Add Category Button --}}
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-2xl font-bold">Categories</h2>
-                <button onclick="document.getElementById('addCategoryModal').classList.remove('hidden')" class="hover:bg-blue-700 px-4 py-2 text-white bg-blue-600 rounded">
-                    + Add Category
-                </button>
+                @if(auth()->user() && auth()->user()->role === 'admin')
+                    <button onclick="document.getElementById('addCategoryModal').classList.remove('hidden')" class="hover:bg-blue-700 px-4 py-2 text-white bg-blue-600 rounded">
+                        + Add Category
+                    </button>
+                @endif
             </div>
-
+            
             {{-- Success Message --}}
             @if(session('success'))
                 <div class="px-4 py-2 mb-4 text-green-700 bg-green-100 border border-green-300 rounded">
@@ -57,7 +60,9 @@
                             <th class="px-6 py-3">#</th>
                             <th class="px-6 py-3">Category Name</th>
                             <th class="px-6 py-3">Created</th>
-                            <th class="px-6 py-3">Actions</th>
+                            @if(auth()->user() && auth()->user()->role === 'admin')
+                                <th class="px-6 py-3">Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -66,14 +71,16 @@
                                 <td class="px-6 py-4">{{ $loop->iteration }}</td>
                                 <td class="px-6 py-4">{{ $category->name }}</td>
                                 <td class="px-6 py-4">{{ $category->created_at->format('M d, Y') }}</td>
-                                <td class="px-6 py-4">
-                                    <a href="{{ route('categories.edit', $category->id) }}" class="hover:underline me-4 text-green-600">Edit</a>
-                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Delete this category?')" class="hover:underline text-red-600">Delete</button>
-                                    </form>
-                                </td>
+                                @if(auth()->user() && auth()->user()->role === 'admin')
+                                    <td class="px-6 py-4">
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="hover:underline me-4 text-green-600">Edit</a>
+                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('Delete this category?')" class="hover:underline text-red-600">Delete</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
