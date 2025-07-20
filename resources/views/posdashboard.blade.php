@@ -3,61 +3,104 @@
 
 <head>
    <meta charset="UTF-8">
-
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    @vite('resources/css/app.css')
    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
    <title>Document</title>
 </head>
 
-<body>
+<body class="bg-gray-100">
 
    <x-navbar />
    <x-sidepanel />
 
-   <div class="sm:ml-64 p-4">
+   <main class="sm:ml-64 p-6">
+    <div class="max-w-2xl mx-auto space-y-12">
+        <h1 class="mb-6 text-3xl font-bold">Dashboard Overview</h1>
 
-      <div class="p-4 mt-10">
+        <div class="md:grid-cols-2 grid grid-cols-1 gap-10">
+            <x-dashboard-card icon="users" title="Total Users" :value="$totalUsers" />
+            <x-dashboard-card icon="products" title="Total Products" :value="$totalProducts" />
+            <x-dashboard-card icon="categories" title="Categories" :value="$totalCategories" />
+            <x-dashboard-card icon="orders" title="Total Orders" :value="$totalOrders" />
+            <x-dashboard-card icon="pending" title="Pending Orders" :value="$pendingOrders" />
+            <x-dashboard-card icon="earnings" title="Total Earnings" :value="'₱' . number_format($totalEarnings, 2)" />
+        </div>
 
+         <div>
+            <h2 class="mb-4 text-xl font-semibold text-gray-700">Quick Admin Actions</h2>
+            <div class="sm:grid-cols-2 md:grid-cols-3 grid grid-cols-1 gap-4">
 
-         <div class="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid grid-cols-1 gap-4">
-            @forelse ($products as $product)
-               <a href="{{ route('products.show', $product->id) }}"> 
-               <div class="bg-gray-50 dark:bg-gray-800 h-80 outline outline-1 outline-gray-200 hover:scale-105 hover:shadow-lg flex flex-col mt-4 overflow-hidden transition rounded-lg shadow-md">
-                     @if ($product->image_path)
-                        <img src="{{ asset('storage/' . $product->image_path) }}" class="object-cover w-full h-48" alt="Product Image">
-                     @endif
-                     <div class="p-4">
-                        <h3 class="dark:text-gray-200 text-lg font-semibold text-gray-700 truncate">
-                           {{ $product->name }}
-                        </h3>
-                        <p class="dark:text-white mt-2 text-base font-bold text-gray-800">
-                           ₱{{ number_format($product->price, 2) }}
-                        </p>
-                        <p class="mt-1 text-sm text-gray-500">
-                           Qty: {{ $product->quantity }}
-                        </p>
-
-                        @if($product->quantity == 0)
-                           <p class="mt-2 text-xs text-red-600 font-medium">Out of stock</p>
-                        @elseif($product->quantity < 5)
-                           <p class="mt-2 text-xs text-yellow-600 font-medium">Low stock</p>
-                        @endif
-                     </div>
-               </div>
+               <a href="{{ route('products.create') }}"
+                  class="hover:bg-gray-50 flex items-center justify-between p-4 bg-white border rounded-lg shadow">
+                  <div class="flex items-center gap-2">
+                        {{-- Plus Icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M12 4v16m8-8H4" />
+                        </svg>
+                        <span class="font-medium text-gray-800">Add New Product</span>
+                  </div>
                </a>
-            @empty
-               <p class="col-span-5 text-center text-gray-500">No products available.</p>
-            @endforelse
+
+               <a href="{{ route('categories.index') }}"
+                  class="hover:bg-gray-50 flex items-center justify-between p-4 bg-white border rounded-lg shadow">
+                  <div class="flex items-center gap-2">
+                        {{-- Tag Icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M7 7h.01M3 3l7.5 7.5M3 3l18 18" />
+                        </svg>
+                        <span class="font-medium text-gray-800">Manage Categories</span>
+                  </div>
+               </a>
+
+               <a href="{{ route('orders.index') }}"
+                  class="hover:bg-gray-50 flex items-center justify-between p-4 bg-white border rounded-lg shadow">
+                  <div class="flex items-center gap-2">
+                        {{-- Clipboard Icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                        </svg>
+                        <span class="font-medium text-gray-800">View All Orders</span>
+                  </div>
+               </a>
+
+               <a href="{{ route('customers.index') }}"
+                  class="hover:bg-gray-50 flex items-center justify-between p-4 bg-white border rounded-lg shadow">
+                  <div class="flex items-center gap-2">
+                        {{-- Users Icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m5-4a4 4 0 11-8 0 4 4 0 018 0zm6 4a4 4 0 10-8 0 4 4 0 008 0z" />
+                        </svg>
+                        <span class="font-medium text-gray-800">Manage Users</span>
+                  </div>
+               </a>
+
+               <a href="{{ route('earnings.index') }}"
+                  class="hover:bg-gray-50 flex items-center justify-between p-4 bg-white border rounded-lg shadow">
+                  <div class="flex items-center gap-2">
+                        {{-- Cash Icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-emerald-600 w-5 h-5" fill="none" viewBox="0 0 24 24"
+                           stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                 d="M12 8c-1.1 0-2 .9-2 2s.9 2 2 2m0 4v2m4-6a4 4 0 10-8 0 4 4 0 008 0zm6-2a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h16a2 2 0 002-2V10z" />
+                        </svg>
+                        <span class="font-medium text-gray-800">View Earnings</span>
+                  </div>
+               </a>
+            </div>
          </div>
-
-
       </div>
+   </main>
 
-   </div>
    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-
-
+   
 </body>
-
 </html>
