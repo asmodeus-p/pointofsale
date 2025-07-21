@@ -5,8 +5,50 @@
     @vite('resources/css/app.css')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cybersofie</title>
+    <style>
+        body {
+        margin: 0;
+        position: relative;
+        }
+
+        .bg-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        }
+
+        .bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../img/a.png'); /* or your actual path */
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 0.5;
+
+        
+        }
+
+
+        .content {
+        position: relative;
+        z-index: 1;
+        padding: 40px;
+        }
+    </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
+    
+    <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+    </div>
   
    <x-navbar />
    <x-sidepanel />

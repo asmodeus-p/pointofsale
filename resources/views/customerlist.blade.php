@@ -8,21 +8,22 @@
         <title>PointOfSale</title>
     </head>
     <body>
+        
         <div class="bg-wrapper bg-blue-200/50">
-        <div class="bg-image"></div>
+            <div class="bg-image"></div>
         </div>
 
         <x-navbar />
         <x-sidepanel />
 
         <div class="sm:ml-64 p-8 mt-12">
-            <h1 class="mb-4 text-2xl font-bold ">Customers</h1>
+            <h1 class=" mb-4 text-2xl font-bold">Customers</h1>
             
             <div class="flex justify-end">
                 <x-filter-bar :sortFields="['name', 'email', 'created_at']" />
             </div>
 
-                <div class="border border-gray-400/50 overflow-x-auto bg-gray-100 rounded shadow-lg">
+                <div class="border-gray-400/50 overflow-x-auto bg-gray-100 border rounded shadow-lg">
                     <table class="rtl:text-right dark:text-gray-400 w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                             <tr>
@@ -62,7 +63,7 @@
                                 </tr>
                             @empty
                              <tr>
-                                <td colspan="5" class="text-center py-6 text-gray-500 dark:text-white">
+                                <td colspan="5" class="dark:text-white py-6 text-center text-gray-500">
                                     No Customers found.
                                 </td>
                             </tr>

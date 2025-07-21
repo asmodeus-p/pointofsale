@@ -106,12 +106,16 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0|max:999',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // <-- nullable here
             'is_hidden' => 'sometimes|boolean',
         ]);
 
         if ($request->hasFile('image')) {
+            // Optionally delete old image file here if needed
             $validated['image_path'] = $request->file('image')->store('products', 'public');
+        } else {
+            // Keep the old image path if no new image uploaded
+            $validated['image_path'] = $product->image_path;
         }
 
         $validated['is_hidden'] = $request->boolean('is_hidden');
