@@ -23,7 +23,7 @@
     <div class="sm:ml-64 p-8 mt-12">
     <h1 class="mb-4 text-2xl font-bold lg:mr-[545px]">Add Products</h1>
         
-        <div class="flex justify-end ">
+        <div class="flex justify-end">
             <x-filter-bar :sortFields="['name', 'price', 'created_at']" />         
         </div>
 
@@ -126,11 +126,15 @@
         <div class="sm:ml-64 p-4">
             
             <div class="p-4 mt-10">
-                <x-category-filter :categories="$categories" />
+                <div class="flex justify-end">
+                    <x-category-filter :categories="$categories" />
+                </div>
+
+
                 <div class="sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid grid-cols-1 gap-4">
                     @forelse ($products as $product)
                     <a href="{{ route('products.show', $product->id) }}"> 
-                    <div class="bg-gray-50 dark:bg-gray-800 h-80 outline outline-1 outline-gray-200 hover:scale-105 hover:shadow-lg flex flex-col mt-4 overflow-hidden transition rounded-lg shadow-md">
+                    <div class="bg-gray-50 dark:bg-gray-800 h-80 outline outline-1 outline-gray-400/50 hover:scale-105 hover:shadow-lg flex flex-col mt-4 overflow-hidden transition rounded-lg shadow-md">
                             @if ($product->image_path)
                                 <img src="{{ asset('storage/' . $product->image_path) }}" class="object-cover w-full h-48" alt="Product Image">
                             @endif

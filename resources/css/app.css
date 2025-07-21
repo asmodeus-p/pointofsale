@@ -6,5 +6,3 @@
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
-@import './styles.css';
-

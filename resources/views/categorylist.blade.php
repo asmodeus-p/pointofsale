@@ -15,6 +15,7 @@
    <div class="bg-image"></div>
 </div>
  
+
 <x-navbar />
 <x-sidepanel />
 

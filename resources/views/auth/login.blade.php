@@ -1,48 +1,67 @@
-@extends('layouts.app')
-
-@section('content')
-
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8">
-
-        <div class="card">
-            <div class="card-header">Login</div>
-            <div class="card-body">
-
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-danger text-center">
-                        {{ $message }}
-                    </div>     
-                @endif
-
-                <form action="{{ route('authenticate') }}" method="post">
-                    @csrf
-                    <div class="mb-3 row">
-                        <label for="email" class="col-md-4 col-form-label text-md-end text-start">Email Address</label>
-                        <div class="col-md-6">
-                          <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}">
-                            @error('email')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="password" class="col-md-4 col-form-label text-md-end text-start">Password</label>
-                        <div class="col-md-6">
-                          <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
-                            @error('password')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Login">
-                    </div>
-                    
-                </form>
-            </div>
-        </div>
-    </div>    
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PointOfSale</title>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css">
     
-@endsection
+    @vite('resources/css/app.css')
+</head>
+
+<body class="bg-gray-100 mt-32 flex items-center justify-center relative">
+
+    <div class="bg-wrapper bg-blue-200/50">
+        <div class="bg-image"></div>
+    </div>
+
+    <div class="border border-gray-300 w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+
+        @if ($message = Session::get('success'))
+            <div class="bg-red-100 text-red-700 text-center text-sm p-2 mb-4 rounded">
+                {{ $message }}
+            </div>
+        @endif
+
+
+        <form action="{{ route('authenticate') }}" method="POST" class="space-y-4">
+            @csrf
+
+            <div>
+                <label for="email" class="block mb-1 text-sm font-medium text-gray-700">Email Address</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
+                @error('email')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div>
+                <label for="password" class="block mb-1 text-sm font-medium text-gray-700">Password</label>
+                <input type="password" id="password" name="password"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror">
+                @error('password')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="text-center">
+                <button type="submit"
+                    class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-150 active:scale-95">
+                    Login
+                </button>
+
+            </div>
+
+            <div class="text-center mt-3 text-sm">
+                Create an account?
+                <a href="{{ route('register') }}" class="text-blue-600 hover:underline font-semibold">Register</a>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>
