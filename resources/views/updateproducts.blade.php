@@ -12,14 +12,14 @@
 <body>
     <div class="background-image"></div>
 
-    <div class="relative z-10">
+    <div class="relative z-20">
         <x-navbar />
         <x-sidepanel />
     </div>
 
 
-    <div class="sm:ml-64 p-8">
-        <form class="md:mt-14 mt-72 rounded-xl relative z-9 max-w-4xl p-6 mx-auto bg-white shadow-md" 
+    <div class="sm:ml-64 p-8 relative z-3">
+        <form class="md:mt-14 mt-72 rounded-xl max-w-4xl p-6 mx-auto bg-white shadow-md" 
           action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             <h5 class="md:col-span-2 mb-6 text-2xl font-bold text-center text-gray-900">EDIT PRODUCT</h5>
             @csrf
@@ -108,7 +108,7 @@
                 <!-- Image Upload -->
                 <div class="flex flex-col justify-between">
                     <div class="flex-grow flex flex-col items-center justify-center border border-gray-300 rounded-lg bg-gray-50 min-h-[200px] relative overflow-hidden">
-                      <label for="image-upload" class="z-10 text-gray-500 cursor-pointer">
+                      <label for="image-upload" class="z-3 text-gray-500 cursor-pointer">
                           Choose File
                           <input type="file" name="image" id="image-upload" accept="image/*" class="hidden">
                       </label>

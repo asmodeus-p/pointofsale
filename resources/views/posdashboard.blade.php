@@ -7,7 +7,7 @@
    @vite('resources/css/app.css')
    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
    <link rel="stylesheet" href="css/styles.css">
-   <title>Dashboard</title>
+   <title>PointOfSale</title>
 </head>
 
 <body>
