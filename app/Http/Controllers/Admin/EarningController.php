@@ -22,10 +22,14 @@ class EarningController extends Controller
                     $query->whereDate('created_at', $now->toDateString());
                     break;
                 case 'weekly':
-                    $query->whereBetween('created_at', [$now->startOfWeek(), $now->endOfWeek()]);
+                    $query->whereBetween('created_at', [
+                        $now->copy()->startOfWeek(),
+                        $now->copy()->endOfWeek()
+                    ]);
                     break;
                 case 'monthly':
-                    $query->whereMonth('created_at', $now->month)->whereYear('created_at', $now->year);
+                    $query->whereMonth('created_at', $now->month)
+                        ->whereYear('created_at', $now->year);
                     break;
                 case 'yearly':
                     $query->whereYear('created_at', $now->year);
