@@ -34,10 +34,7 @@
         background-size: cover;
         opacity: 0.5;
 
-        
         }
-
-
         .content {
         position: relative;
         z-index: 1;
