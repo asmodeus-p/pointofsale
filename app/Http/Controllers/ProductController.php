@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -56,7 +58,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
@@ -66,15 +68,28 @@ class ProductController extends Controller
             'is_hidden' => 'sometimes|boolean',
         ]);
 
+        $imageUrl = null;
+
         if ($request->hasFile('image')) {
-            $validated['image_path'] = $request->file('image')->store('products', 'public');
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $publicUrl = $this->uploadToSupabase($file, $filename);
+
+            if ($publicUrl) {
+                $imageUrl = $publicUrl;
+            }
         }
 
-        $validated['is_hidden'] = $request->boolean('is_hidden');
+        Product::create([
+            'name'        => $request->name,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'price'       => $request->price,
+            'quantity'    => $request->quantity,
+            'image_path'  => $imageUrl,
+        ]);
 
-        Product::create($validated);
-
-        return redirect()->route('products.index')->with('success', 'Product added successfully!');
+        return redirect()->route('products.index')->with('success', 'Product created.');
     }
 
     /**
@@ -100,7 +115,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
@@ -110,19 +125,29 @@ class ProductController extends Controller
             'is_hidden' => 'sometimes|boolean',
         ]);
 
+        $imageUrl = $product->image_path;
+
         if ($request->hasFile('image')) {
-            // Optionally delete old image file here if needed
-            $validated['image_path'] = $request->file('image')->store('products', 'public');
-        } else {
-            // Keep the old image path if no new image uploaded
-            $validated['image_path'] = $product->image_path;
+            $file = $request->file('image');
+            $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $publicUrl = $this->uploadToSupabase($file, $filename);
+
+            if ($publicUrl) {
+                $imageUrl = $publicUrl;
+            }
         }
 
-        $validated['is_hidden'] = $request->boolean('is_hidden');
+        $product->update([
+            'name'        => $request->name,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'price'       => $request->price,
+            'quantity'    => $request->quantity,
+            'image_path'  => $imageUrl,
+        ]);
 
-        $product->update($validated);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+        return redirect()->route('products.index')->with('success', 'Product updated.');
     }
 
     /**
@@ -132,5 +157,24 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+    }
+
+    public function uploadToSupabase($image)
+    {
+        $supabaseUrl = rtrim(env('SUPABASE_URL'), '/'); // e.g. https://your-project.supabase.co
+        $bucket = 'uploads';
+        $fileName = 'products/' . uniqid() . '_' . $image->getClientOriginalName();
+
+        $uploadUrl = "{$supabaseUrl}/storage/v1/object/{$bucket}/{$fileName}";
+
+        $response = Http::withToken(env('SUPABASE_SERVICE_KEY'))
+            ->attach('file', fopen($image->getPathname(), 'r'), $fileName)
+            ->post($uploadUrl);
+
+        if (!$response->successful()) {
+            throw new \Exception('Upload to Supabase failed: ' . $response->body());
+        }
+
+        return "{$supabaseUrl}/storage/v1/object/public/{$bucket}/{$fileName}";
     }
 }
