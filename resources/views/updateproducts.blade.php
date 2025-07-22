@@ -4,22 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
+    <link rel="stylesheet" href="css/styles.css">
     <title>PointOfSale</title>
-</style>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("{{ asset('img/a.png') }}") no-repeat center center;
+            background-size: cover;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.9); 
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 
 </head>
 
 <body>
     <div class="background-image"></div>
 
-    <div class="relative z-10">
         <x-navbar />
         <x-sidepanel />
-    </div>
-
 
     <div class="sm:ml-64 p-8">
-        <form class="md:mt-14 mt-72 rounded-xl relative z-9 max-w-4xl p-6 mx-auto bg-white shadow-md" 
+        <form class="md:mt-14 mt-72 rounded-xl z-9 relative max-w-4xl p-6 mx-auto bg-white shadow-md" 
           action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             <h5 class="md:col-span-2 mb-6 text-2xl font-bold text-center text-gray-900">EDIT PRODUCT</h5>
             @csrf
@@ -184,45 +216,5 @@
 
 
 </body>
-
-<style>
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-    }
-
-    body {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-    }
-
-    .background-image {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url("{{ asset('img/a.png') }}") no-repeat center center;
-        background-size: cover;
-        opacity: 0.5;
-        z-index: 0;
-    }
-
-    main {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        max-width: 600px;
-        padding: 2rem;
-        background-color: rgba(255, 255, 255, 0.9); 
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-</style>
-
 </html>
 
