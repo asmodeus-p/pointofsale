@@ -18,7 +18,7 @@
     <x-sidepanel />
 
     <div class="sm:ml-64 p-8 mt-12">
-        <h1 class="mb-4 text-2xl font-bold">My Orders</h1>
+        <h1 class="mb-4 text-2xl font-bold">Orders</h1>
     
         @forelse($orders as $order)
             <div class="border border-gray-400/50 p-4 mb-4 bg-white rounded shadow">

@@ -25,7 +25,7 @@
                     
                     {{-- Product Info with Image --}}
                     <div class="flex items-center gap-4 w-1/2">
-                        <img src="{{ asset('storage/' . $item->product->image_path) }}" alt="{{ $item->product->name }}" class="w-12 h-12 rounded outline outline-gray-300">
+                        <img src="{{ $item->product->image_path }}" alt="{{ $item->product->name }}" class="w-12 h-12 rounded outline outline-gray-300">
                         <div>
                             <div class="font-semibold">{{ $item->product->name }}</div>
                             <div class="font-medium text-blue-600">₱{{ number_format($item->product->price, 2) }}</div>

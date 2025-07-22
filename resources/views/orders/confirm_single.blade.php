@@ -27,7 +27,7 @@
 
             <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center space-x-3">
-                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="Product Image" class="w-12 h-12 rounded outline outline-gray-300">
+                    <img src="{{$product->image_path}}" alt="Product Image" class="w-12 h-12 rounded outline outline-gray-300">
                     <div>
                         <div class="font-semibold">{{ $product->name }}</div>
                         <div class="text-sm text-gray-500">

@@ -45,7 +45,7 @@
         padding: 40px;
         }
     </style>
-   <title>Dashboard</title>
+   <title>PointOfSale</title>
 </head>
 
 <body>
