@@ -105,7 +105,7 @@
                 <a href="{{ route('products.show', $product->id) }}">
                     <div class="bg-gray-50 dark:bg-gray-800 h-80 outline outline-1 outline-gray-400/50 hover:scale-105 hover:shadow-lg flex flex-col mt-4 overflow-hidden transition rounded-lg shadow-md">
                         @if ($product->image_path)
-                            <img src="{{ $product->image_path }}" class="object-cover w-full h-48" alt="Product Image">
+                            <img src="{{ $product->image_path }}" alt="{{ $product->name }}" class="object-cover w-full h-48">
                         @endif
                         <div class="p-4">
                             <h3 class="dark:text-gray-200 text-lg font-semibold text-gray-700 truncate">

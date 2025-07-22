@@ -48,7 +48,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900">
+<body>
    <div class="bg-wrapper bg-blue-200/50">
       <div class="bg-image"></div>
    </div>
@@ -64,7 +64,7 @@
             <!-- Product Image -->
             <div class="w-64 h-64 sm:h-64 lg:h-[32rem] lg:w-[32rem] flex justify-center items-center overflow-hidden rounded-lg outline outline-1 outline-gray-300">
                <img 
-                  src="{{ asset('storage/' . $product->image_path) }}" 
+                  src="{{ $product->image_path }}" 
                   class="object-cover w-64 h-64 sm:h-64 lg:h-[32rem] lg:w-[32rem]" 
                   alt="{{ $product->name }}">
             </div>

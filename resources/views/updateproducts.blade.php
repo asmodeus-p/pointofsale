@@ -1,6 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>
+        body {
+        margin: 0;
+        position: relative;
+        }
+
+        .bg-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+        }
+
+        .bg-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('../img/a.png'); /* or your actual path */
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        opacity: 0.5;
+
+        
+        }
+
+
+        .content {
+        position: relative;
+        z-index: 1;
+        padding: 40px;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
@@ -10,14 +48,16 @@
 </head>
 
 <body>
-  <div class="background-image"></div>
+  <div class="bg-wrapper bg-blue-200/50">
+      <div class="bg-image"></div>
+   </div>
 
     <x-navbar />
     <x-sidepanel />
   
 
     <div class="sm:ml-64 mt-14 p-8">
-        <form class="relative z-10 rounded-xl max-w-4xl p-6 mx-auto bg-white shadow-md" action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        <form class="rounded-xl relative z-10 max-w-4xl p-6 mx-auto bg-white shadow-md" action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             <h5 class="md:col-span-2 mb-6 text-2xl font-bold text-center text-gray-900">EDIT PRODUCT</h5>
             @csrf
             @method('PUT')
@@ -110,12 +150,11 @@
                           <input type="file" name="image" id="image-upload" accept="image/*" class="hidden">
                       </label>
 
-                      <img
-                        id="image-preview"
-                        src="{{ $product->image_path ? asset('storage/' . $product->image_path) : '' }}"
-                        class="absolute inset-0 z-0 {{ $product->image_path ? '' : 'hidden' }} object-cover w-full h-full"
-                        alt="Image Preview"
-                      >
+                      <img id="image-preview"
+                        src="{{ old('image', $product->image_path) }}"
+                        class="absolute inset-0 object-contain w-full h-full {{ $product->image_path ? '' : 'hidden' }}"
+                        alt="Image Preview">
+
                   </div>
                     @error('image')
                         <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -155,26 +194,31 @@
         };
     </script>
 
-    <script>
-    const imageInput = document.getElementById('image-upload');
-    const imagePreview = document.getElementById('image-preview');
+    
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-    imageInput.addEventListener('change', function () {
-        const file = this.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                imagePreview.src = e.target.result;
-                imagePreview.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        } else {
-            imagePreview.src = '';
-            imagePreview.classList.add('hidden');
-        }
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script>
+      const imageInput = document.getElementById('image-upload');
+      const imagePreview = document.getElementById('image-preview');
+
+      imageInput.addEventListener('change', function () {
+          const file = this.files[0];
+
+          if (file && file.type.startsWith('image/')) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                  imagePreview.src = e.target.result;
+                  imagePreview.classList.remove('hidden');
+                  imagePreview.style.zIndex = 10; // Ensure it appears above the background
+              };
+              reader.readAsDataURL(file);
+          } else {
+              imagePreview.src = '';
+              imagePreview.classList.add('hidden');
+          }
+      });
+  </script>
+
 
 </body>
 
