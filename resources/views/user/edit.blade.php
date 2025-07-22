@@ -73,19 +73,19 @@
 
         <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-            <input type="text" name="name" id="name" class="w-full mt-1 border-gray-300 rounded" value="{{ old('name', $user->name) }}">
+            <input type="text" name="name" id="name" class="w-full p-2 mt-1 border border-gray-300 rounded" value="{{ old('name', $user->name) }}">
             @error('name') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
             <label for="password" class="block text-sm font-medium text-gray-700">New Password</label>
-            <input type="password" name="password" id="password" class="w-full mt-1 border-gray-300 rounded">
+            <input type="password" name="password" id="password" class="w-full p-2 mt-1 border border-gray-300 rounded">
             @error('password') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
         </div>
 
         <div class="mb-4">
             <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input type="password" name="password_confirmation" id="password_confirmation" class="w-full mt-1 border-gray-300 rounded">
+            <input type="password" name="password_confirmation" id="password_confirmation" class="w-full p-2 mt-1 border border-gray-300 rounded">
         </div>
 
         <button type="submit" class="hover:bg-blue-600 px-4 py-2 text-white bg-blue-500 rounded">Update Profile</button>

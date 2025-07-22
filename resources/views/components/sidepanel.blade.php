@@ -1,6 +1,7 @@
+@auth
 
-<aside id="logo-sidebar" class="bg-white backdrop-blur-md sm:translate-x-0 fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full border-r border-gray-200" aria-label="Sidebar">
-    <div class="dark:bg-gray-800 h-full px-3 pb-4 overflow-y-auto  ">
+<aside id="logo-sidebar" class="backdrop-blur-md sm:translate-x-0 fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200" aria-label="Sidebar">
+    <div class="dark:bg-gray-800  h-full px-3 pb-4 overflow-y-auto">
 
         <ul class="space-y-2 font-medium">
             @if(auth()->user() && auth()->user()->role === 'admin')
@@ -93,3 +94,5 @@
 </div>
 </aside>
 
+    
+@endauth
