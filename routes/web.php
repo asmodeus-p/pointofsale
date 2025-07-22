@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\EarningController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/send-test-email', function () {
     Mail::raw('This is a test email from Gmail SMTP.', function ($message) {
         $message->to('marimcln593@gmail.com') // <- replace with your actual email
-                ->subject('Test Email');
+            ->subject('Test Email');
     });
 
     return 'Test email sent!';
@@ -47,14 +48,14 @@ Route::controller(LoginRegisterController::class)->group(function () {
 // Authenticated Routes
 Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
 
-    // 🛒 Cart Routes (must come before custom routes)
+    // Cart Routes (must come before custom routes)
     Route::resource('cart', CartController::class);
 
-    // 🔼🔽 Custom increment/decrement for cart
+    // Custom increment/decrement for cart
     Route::post('/cart/{id}/increment', [CartController::class, 'incrementQuantity'])->name('cart.increment');
     Route::post('/cart/{id}/decrement', [CartController::class, 'decrementQuantity'])->name('cart.decrement');
 
-    // ✅ Resource routes for products/categories (admin-only routes defined later)
+    // Resource routes for products/categories (admin-only routes defined later)
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/my-orders', [OrderController::class, 'index'])->name('orders.index');
@@ -63,14 +64,18 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     Route::get('/place-order/cart', [OrderController::class, 'showCartOrderForm'])->name('order.cart.form');
     Route::get('/place-order/product/{product}', [OrderController::class, 'showSingleOrderForm'])->name('order.single.form');
 
-    // ✅ Buy Now POST routes
+    // Buy Now POST routes
     Route::post('/buy-now-cart', [OrderController::class, 'buyNowCart'])->name('buy.now.cart');
     Route::post('/buy-now/{product}', [OrderController::class, 'buyNowSingle'])->name('buy.now.single');
 
-    // ✅ Specific PUT for cart update
+    //  Specific PUT for cart update
     Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
 
-    // ✅ PUT this BEFORE /products/{product} to avoid route collision
+    // Edit user info routes
+    Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+
+    // PUT this BEFORE /products/{product} to avoid route collision
     Route::middleware('role:admin')->group(function () {
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
         Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -82,7 +87,7 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
     // 🟡 Must come after /create and /edit to avoid conflicts
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-    // ✅ Admin-only management routes
+    // Admin-only management routes
     Route::middleware('role:admin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
