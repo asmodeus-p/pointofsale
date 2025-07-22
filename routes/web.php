@@ -10,6 +10,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\EarningController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -35,6 +38,14 @@ Route::controller(LoginRegisterController::class)->group(function () {
         Route::post('/store',        'store')->name('store');
         Route::get('/login',         'login')->name('login');
         Route::post('/authenticate', 'authenticate')->name('authenticate');
+
+        // Forgot password routes
+        Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+        Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+        // Reset passwrod routes
+        Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+        Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
     });
 
     /* -------------   AUTH‑ONLY ROUTES   ------------- */
@@ -64,6 +75,11 @@ Route::middleware(['auth', 'verified', 'role:admin,user'])->group(function () {
 
     Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
 
+    // Edit user info routes
+    Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/update', [UserController::class, 'update'])->name('user.update');
+
+    // PUT this BEFORE /products/{product} to avoid route collision
     Route::middleware('role:admin')->group(function () {
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
         Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');

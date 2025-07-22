@@ -10,17 +10,17 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="bg-gray-100 mt-32 flex items-center justify-center relative">
+<body class="relative flex items-center justify-center mt-32 bg-gray-100">
 
     <div class="bg-wrapper bg-blue-200/50">
         <div class="bg-image"></div>
     </div>
 
-    <div class="border border-gray-300 w-full max-w-md bg-white rounded-lg shadow-md p-8">
-        <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+    <div class="w-full max-w-md p-8 bg-white border border-gray-300 rounded-lg shadow-md">
+        <h2 class="mb-6 text-2xl font-bold text-center">Login</h2>
 
         @if ($message = Session::get('success'))
-            <div class="bg-red-100 text-red-700 text-center text-sm p-2 mb-4 rounded">
+            <div class="p-2 mb-4 text-sm text-center text-red-700 bg-red-100 rounded">
                 {{ $message }}
             </div>
         @endif
@@ -34,7 +34,7 @@
                 <input type="email" id="email" name="email" value="{{ old('email') }}"
                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
                 @error('email')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-sm text-red-500">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -43,22 +43,28 @@
                 <input type="password" id="password" name="password"
                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror">
                 @error('password')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    <span class="text-sm text-red-500">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="text-center">
                 <button type="submit"
-                    class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-150 active:scale-95">
+                    class="hover:bg-blue-700 active:scale-95 w-full px-4 py-2 text-white transition-all duration-150 bg-blue-600 rounded-md">
                     Login
                 </button>
 
             </div>
 
-            <div class="text-center mt-3 text-sm">
+            <div class="mt-3 text-sm text-center">
                 Create an account?
-                <a href="{{ route('register') }}" class="text-blue-600 hover:underline font-semibold">Register</a>
+                <a href="{{ route('register') }}" class="hover:underline font-semibold text-blue-600">Register</a>
             </div>
+            <div class="mt-2 text-right">
+                <a href="{{ route('password.request') }}" class="hover:underline text-sm text-blue-600">
+                    Forgot your password?
+                </a>
+            </div>
+
 
         </form>
     </div>
