@@ -1,4 +1,4 @@
-<div>
+<div >
        <nav class="dark:bg-gray-800 dark:border-gray-700 fixed top-0 z-50 w-full bg-white border-b border-gray-200">
       <div class="lg:px-5 lg:pl-3 px-3 py-3">
          <div class="flex items-center justify-between">
@@ -27,7 +27,13 @@
                <div>
                   <button type="button" class="focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 flex text-sm bg-gray-800 rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                      <span class="sr-only">Open user menu</span>
-                     <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                     @php
+                        $initial = strtoupper(substr(Auth::user()->name, 0, 1));
+                     @endphp
+                     <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
+                        {{ $initial }}
+                     </div>
+
                   </button>
                </div>
                <div class="dark:bg-gray-700 dark:divide-gray-600 z-50 hidden my-4 overflow-hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg" id="dropdown-user">

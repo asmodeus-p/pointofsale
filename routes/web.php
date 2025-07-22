@@ -12,6 +12,17 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\EarningController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
+
+Route::get('/send-test-email', function () {
+    Mail::raw('This is a test email from Gmail SMTP.', function ($message) {
+        $message->to('marimcln593@gmail.com') // <- replace with your actual email
+                ->subject('Test Email');
+    });
+
+    return 'Test email sent!';
+});
 
 // Redirect root to login
 Route::get('/', fn() => redirect('/login'));

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     <link rel="stylesheet" href="css/styles.css">
-    <title>Add Products</title>
+    <title>PointOfSale</title>
     <style>
         body {
         margin: 0;
@@ -48,11 +48,12 @@
 
 <body>
 
-    <div class="bg-wrapper bg-blue-200/50">
+    <div class="bg-wrapper bg-gray-400/50">
       <div class="bg-image"></div>
     </div>
     <x-navbar />
     <x-sidepanel />
+    
 
     <div class="sm:ml-64 mt-14 p-8">
         <form class="rounded-xl max-w-4xl p-6 mx-auto bg-white shadow-md" action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">

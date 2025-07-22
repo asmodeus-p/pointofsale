@@ -5,7 +5,7 @@
 
 <div class="shadown-lg border border-gray-200">
     <div class="px-8 py-4 text-center border-b border-gray-200">
-        <div class="mx-auto mb-2 h-12 w-12 rounded-full bg-purple-500 flex items-center justify-center text-white text-xl font-semibold">
+        <div class="mx-auto mb-2 h-12 w-12 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-semibold">
             {{ $initial }}
         </div>
         <p class="text-sm font-medium text-gray-900">
