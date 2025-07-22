@@ -22,7 +22,7 @@
 
         <div class="flex justify-end">
             <form method="GET" class="mb-4">
-                <select name="filter" onchange="this.form.submit()" class="px-8 py-2 bg-green-500 rounded-md">
+                <select name="filter" onchange="this.form.submit()" class="px-8 py-2 bg-gray-700/50 text-white font-semibold rounded-md border border-gray-600/50 shadow-lg">
                     <option value="">All Time</option>
                     <option value="daily" {{ request('filter') == 'daily' ? 'selected' : '' }}>Daily</option>
                     <option value="weekly" {{ request('filter') == 'weekly' ? 'selected' : '' }}>Weekly</option>

@@ -33,10 +33,7 @@
         background-position: center center;
         background-size: cover;
         opacity: 0.5;
-
-        
         }
-
 
         .content {
         position: relative;

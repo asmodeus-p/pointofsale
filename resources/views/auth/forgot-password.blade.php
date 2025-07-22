@@ -6,10 +6,14 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    @vite('resources/css/app.css')
    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="css/styles.css">
    <title>PointOfSale</title>
 </head>
 
-<body class="bg-gray-400/50 flex items-center justify-center mt-56">
+<body class="flex items-center justify-center mt-56">
+    <div class="bg-wrapper bg-blue-200/50">
+        <div class="bg-image"></div>
+    </div>
 
     <main class="w-full max-w-xl p-6 bg-white rounded shadow">
         <h2 class="text-xl font-bold mb-4">Forgot Password</h2>
